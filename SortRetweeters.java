@@ -7,6 +7,8 @@ import java.util.*;
 
 public class SortRetweeters
 {
+  //configure() logs into the Twitter API using my credentials (stored locally on my computer to avoid committing API
+  //   keys to version control). Returns a Twitter object, to be used later.
   public static Twitter configure() throws Exception
   {
     File file = new File("C:\\Users\\Nayil\\Documents\\TwitterAPIcreds\\credentials.txt");
@@ -26,28 +28,35 @@ public class SortRetweeters
     br.close();
     return twitter;
   }
+  
+  // Given a Tweet ID, testPrintTweet() outputs the tweet.
   public static void testPrintTweet() throws Exception
   {
     Scanner input = new Scanner(System.in);
     Twitter twitter = configure();
     System.out.println("Input Tweet ID.");
     long tweetID = input.nextLong();
-    try {
+    try 
+    {
         Status status = twitter.showStatus(tweetID);
-        if (status == null) { // 
-            // don't know if needed - T4J docs are very bad
-        } else {
+        if (status == null) 
+        {
+        } 
+        else 
+        {
             System.out.println("@" + status.getUser().getScreenName()
                         + " - " + status.getText());
         }
-    } catch (TwitterException e) {
+    } 
+    catch (TwitterException e) 
+    {
         System.err.print("Failed to search tweets: " + e.getMessage());
-        // e.printStackTrace();
-        // DON'T KNOW IF THIS IS THROWN WHEN ID IS INVALID
     }
     input.close();
   }
   
+  //Given a Tweet ID, sortRetweeters() outputs a sorted list of the the retweeters of that Tweet, sorted by follower 
+  //   count. It also outputs the follower counts as well.
   public static void sortRetweeters() throws Exception
   {
     Scanner input = new Scanner(System.in);
@@ -74,16 +83,16 @@ public class SortRetweeters
     }
     System.out.println("Done treemap");
 
-    //Reverse the order of the treemap 
     System.out.println("Reversing treemap");
     NavigableMap<Integer,String> reverseTreeMap = tm.descendingMap();
     
-    //Put treemap values in string array
     Collection c = reverseTreeMap.values();
     System.out.println(c);
     Set<Integer> keys = reverseTreeMap.keySet();
     System.out.println(keys);
   }
+  
+  //Main method.
   public static void main(String[]args) throws Exception
   {
     sortRetweeters();
